@@ -1,14 +1,16 @@
 # https://www.djangosnippets.org/snippets/243/
 
 from __future__ import absolute_import
-import six
+
 import base64
 
-from django.http import HttpResponse
+import six
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
 
 
-def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
+def view_or_basicauth(view, request, test_func, realm=str(),
+                      *args, **kwargs):
     """
     This is a helper function used by both 'logged_in_or_basicauth' and
     'has_perm_or_basicauth' that does the nitty of determining if they
@@ -26,10 +28,9 @@ def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
         auth = request.META['HTTP_AUTHORIZATION'].split()
         if len(auth) == 2:
             # NOTE: We are only support basic authentication for now.
-            #
             if auth[0].lower() == "basic":
                 if six.PY2:
-                    uname, passwd = base64.b64decode(auth[1]).split(':')
+                    uname, passwd = base64.b64decode(auth[1]).split(':')  # NOQA
                 else:
                     uname, passwd = base64.b64decode(auth[1]).decode('utf-8').split(':')
                 user = authenticate(username=uname, password=passwd)
@@ -50,7 +51,7 @@ def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
     return response
 
 
-def logged_in_or_basicauth(realm = ""):
+def logged_in_or_basicauth(realm=str()):
     """
     A simple decorator that requires a user to be logged in. If they are not
     logged in the request is examined for a 'authorization' header.
@@ -88,7 +89,7 @@ def logged_in_or_basicauth(realm = ""):
     return view_decorator
 
 
-def has_perm_or_basicauth(perm, realm = ""):
+def has_perm_or_basicauth(perm, realm=str()):
     """
     This is similar to the above decorator 'logged_in_or_basicauth'
     except that it requires the logged in user to have a specific
@@ -103,8 +104,11 @@ def has_perm_or_basicauth(perm, realm = ""):
     """
     def view_decorator(func):
         def wrapper(request, *args, **kwargs):
-            return view_or_basicauth(func, request,
-                                     lambda u: u.has_perm(perm),
-                                     realm, *args, **kwargs)
+            return view_or_basicauth(
+                func, request,
+                lambda u: u.has_perm(perm),
+                realm, *args, **kwargs
+            )
         return wrapper
+
     return view_decorator
