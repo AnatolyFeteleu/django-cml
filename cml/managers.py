@@ -38,7 +38,7 @@ class ManagerMixin(object):
         return (
             tree.findall(
                 '/'.join(map(
-                    lambda d: '{%s}%s' % (settings.CML_DOC_XMLNS, path),
+                    lambda d: '{%s}%s' % (settings.CML_DOC_XMLNS, d),
                     path.split('/')
                 ))
             )
@@ -104,7 +104,7 @@ class ImportManager(ManagerMixin):
         for group_element in self.find_all(f'{GROUPS}/{GROUP}', tree=current_element):
             group_item = Group(group_element)
             group_item.id = self._get_cleaned_text(self.find(ID, tree=group_element))
-            group_item.name = self._get_cleaned_text(self.find(NAME, tree=group_element))
+            group_item.name = self._get_cleaned_text(self.find(TITLE, tree=group_element))
             if parent_item is not None:
                 parent_item.groups.append(group_item)
             self._parse_groups(group_element, group_item)
@@ -119,7 +119,7 @@ class ImportManager(ManagerMixin):
             property_item.id = self._get_cleaned_text(
                 self.find(ID, tree=property_element))
             property_item.name = self._get_cleaned_text(
-                self.find(NAME, tree=property_element))
+                self.find(TITLE, tree=property_element))
             property_item.value_type = self._get_cleaned_text(
                 self.find(VALUE_TYPE, tree=property_element))
             property_item.for_products = self._get_cleaned_text(
@@ -153,13 +153,13 @@ class ImportManager(ManagerMixin):
             product_item.id = self._get_cleaned_text(
                 self.find(ID, tree=product_element))
             product_item.name = self._get_cleaned_text(
-                self.find(NAME, tree=product_element))
+                self.find(TITLE, tree=product_element))
             sku_element = self.find(BASIC_UNIT, tree=product_element)
 
             if sku_element is not None:
                 sku_item = Sku(sku_element)
                 sku_item.id = sku_element.get(CODE)
-                sku_item.name_full = sku_element.get(NAME_FULL)
+                sku_item.name_full = sku_element.get(TITLE_FULL)
                 sku_item.international_abbr = sku_element.get(INTERNATIONAL_ABBR)
                 sku_item.name = self._get_cleaned_text(sku_element)
                 product_item.sku_id = sku_item.id
@@ -198,7 +198,7 @@ class ImportManager(ManagerMixin):
                     f'{TAX_RATES}/{TAX_RATE}', tree=product_element):
                 tax_item = Tax(tax_element)
                 tax_item.name = self._get_cleaned_text(
-                    self.find(NAME, tree=tax_element))
+                    self.find(TITLE, tree=tax_element))
 
                 try:
                     tax_item.value = Decimal(self._get_cleaned_text(
@@ -214,7 +214,7 @@ class ImportManager(ManagerMixin):
                     tree=product_element):
                 additional_field = AdditionalField(additional_field_element)
                 additional_field.name = self._get_cleaned_text(
-                    self.find(NAME, tree=additional_field_element))
+                    self.find(TITLE, tree=additional_field_element))
                 additional_field.value = self._get_cleaned_text(
                     self.find(VALUE, tree=additional_field_element))
                 product_item.additional_fields.append(additional_field)
@@ -239,7 +239,7 @@ class ImportManager(ManagerMixin):
             price_type_item.id = self._get_cleaned_text(
                 self.find(ID, tree=price_type_element))
             price_type_item.name = self._get_cleaned_text(
-                self.find(NAME, tree=price_type_element))
+                self.find(TITLE, tree=price_type_element))
             price_type_item.currency = self._get_cleaned_text(
                 self.find(CURRENCY, tree=price_type_element))
             price_type_item.tax_name = self._get_cleaned_text(
@@ -255,13 +255,13 @@ class ImportManager(ManagerMixin):
                 f'{OFFERS}/{OFFER}', tree=current_element):
             offer_item = Offer(offer_element)
             offer_item.id = self._get_cleaned_text(self.find(ID, tree=offer_element))
-            offer_item.name = self._get_cleaned_text(self.find(NAME, tree=offer_element))
+            offer_item.name = self._get_cleaned_text(self.find(TITLE, tree=offer_element))
 
             sku_element = self.find(BASIC_UNIT, tree=offer_element)
             if sku_element is not None:
                 sku_item = Sku(sku_element)
                 sku_item.id = sku_element.get(CODE)
-                sku_item.name_full = sku_element.get(NAME_FULL)
+                sku_item.name_full = sku_element.get(TITLE_FULL)
                 sku_item.international_abbr = sku_element.get(INTERNATIONAL_ABBR)
                 sku_item.name = self._get_cleaned_text(sku_element)
                 offer_item.sku_id = sku_item.id
@@ -337,7 +337,7 @@ class ImportManager(ManagerMixin):
                     order_item_item.id = self._get_cleaned_text(
                         self.find(ID, tree=item_element))
                     order_item_item.name = self._get_cleaned_text(
-                        self.find(NAME, tree=item_element))
+                        self.find(TITLE, tree=item_element))
                     sku_element = self.find(BASIC_UNIT, tree=item_element)
 
                     if sku_element is not None:
@@ -345,7 +345,7 @@ class ImportManager(ManagerMixin):
                         order_item_item.sku.name = self._get_cleaned_text(
                             sku_element)
                         order_item_item.sku.name_full = sku_element.get(
-                            NAME_FULL)
+                            TITLE_FULL)
                         order_item_item.sku.international_abbr = sku_element.get(
                             INTERNATIONAL_ABBR)
 
@@ -365,7 +365,7 @@ class ImportManager(ManagerMixin):
                         for additional_field_element in additional_field_elements:
                             additional_field_item = AdditionalField(additional_field_element)
                             additional_field_item.name = self._get_cleaned_text(
-                                self.find(NAME, tree=item_element))
+                                self.find(TITLE, tree=item_element))
                             additional_field_item.value = self._get_cleaned_text(
                                 self.find(VALUE, tree=item_element))
             self.item_processor.process_item(order_item)
@@ -433,11 +433,11 @@ class ExportManager(object):
                 product_element = ET.SubElement(products_element, ITEM)
                 ET.SubElement(product_element, ID).text = six.text_type(
                     order_item.id)
-                ET.SubElement(product_element, NAME).text = six.text_type(
+                ET.SubElement(product_element, TITLE).text = six.text_type(
                     order_item.name)
                 sku_element = ET.SubElement(product_element, BASIC_UNIT)
                 sku_element.set(CODE, order_item.sku.id)
-                sku_element.set(NAME_FULL, order_item.sku.name_full)
+                sku_element.set(TITLE_FULL, order_item.sku.name_full)
                 sku_element.set(
                     INTERNATIONAL_ABBR, order_item.sku.international_abbr)
                 sku_element.text = order_item.sku.name
