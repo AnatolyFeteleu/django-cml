@@ -1,10 +1,16 @@
 import os
 
-from appconf import AppConf
 from django.conf import settings
+from appconf import AppConf
 
 
-class CMLAppCong(AppConf):
+__all__ = (
+    'settings',
+    'CMLAppConf',
+)
+
+
+class CMLAppConf(AppConf):
 
     RESPONSE_SUCCESS = 'success'
     RESPONSE_PROGRESS = 'progress'
@@ -18,7 +24,7 @@ class CMLAppCong(AppConf):
 
     DELETE_FILES_AFTER_IMPORT = True
 
-    MAJOR_VERSION = 2
-    MINOR_VERSION = 1
-    VERSION = f'{MAJOR_VERSION}.{MINOR_VERSION}'
-    XMLNS = f'urn:1C.ru:commerceml_{MAJOR_VERSION}_{MINOR_VERSION}'
+    DOC_MAJOR_VER = 2
+    DOC_MINOR_VER = 1
+    DOC_VERSION = f'{DOC_MAJOR_VER}.{DOC_MINOR_VER}'
+    DOC_XMLNS = f'urn:1C.ru:commerceml_{DOC_MAJOR_VER}_{DOC_MINOR_VER}'

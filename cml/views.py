@@ -6,6 +6,7 @@ import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from .auth import has_perm_or_basicauth, logged_in_or_basicauth
 from .managers import ImportManager, ExportManager
@@ -84,7 +85,7 @@ def import_file(request):
         try:
             os.remove(file_path)
         except OSError:
-            logger.error('Can\'t delete file after import: {}'.format(file_path))
+            logger.error(f'Can\'t delete file after import: {file_path}')
     Exchange.log('import', request.user, filename)
     return success(request)
 

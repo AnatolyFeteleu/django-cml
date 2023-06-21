@@ -1,1 +1,1 @@
-import typing
+import typing  # NOQA

@@ -2,11 +2,30 @@ from __future__ import absolute_import
 
 from datetime import datetime
 from decimal import Decimal
+
 from .utils.translations import *
 
 PROCESSED_ITEMS = (
     'Group', 'PropertyVariant', 'Property', 'PropertyVariant', 'Sku', 'Tax',
     'Product', 'Offer', 'Order'
+)
+
+__all__ = (
+    'BaseItem',
+    'Group',
+    'Property',
+    'PropertyVariant',
+    'Sku',
+    'Tax',
+    'AdditionalField',
+    'Product',
+    'PriceType',
+    'Price',
+    'Offer',
+    'Client',
+    'OrderItem',
+    'Order',
+    'PROCESSED_ITEMS',
 )
 
 
