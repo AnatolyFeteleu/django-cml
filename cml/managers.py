@@ -99,6 +99,7 @@ class ImportManager(ManagerMixin):
         if classifier_element is not None:
             self._parse_groups(classifier_element)
             self._parse_properties(classifier_element)
+            self._parse_units_of_measurements(classifier_element)
 
     def _parse_groups(self, current_element, parent_item=None):
         for group_element in self.find_all(f'{GROUPS}/{GROUP}', tree=current_element):
@@ -134,6 +135,16 @@ class ImportManager(ManagerMixin):
                 variant.value = self._get_cleaned_text(self.find(VALUE, tree=variant_element))
                 variant.property_id = property_item.id
                 self.item_processor.process_item(variant)
+
+    def _parse_units_of_measurements(self, current_element):
+        for unit_element in self.find_all(f'{UNITS_OF_MEASUREMENT}/{UNIT_OF_MEASUREMENT}', tree=current_element):
+            unit_item = UnitOfMeasurementItem(unit_element)
+            unit_item.code = self._get_cleaned_text(
+                self.find(CODE, tree=unit_element))
+            unit_item.title_full = self._get_cleaned_text(
+                self.find(TITLE_FULL, tree=unit_element))
+            unit_item.intern_title_short = self._get_cleaned_text(
+                self.find(INTERNATIONAL_TITLE_SHORT, tree=unit_element))
 
     def import_catalogue(self):
         try:

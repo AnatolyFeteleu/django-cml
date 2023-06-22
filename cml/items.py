@@ -7,7 +7,7 @@ from .utils.translations import *
 
 PROCESSED_ITEMS = (
     'Group', 'PropertyVariant', 'Property', 'PropertyVariant', 'Sku', 'Tax',
-    'Product', 'Offer', 'Order'
+    'Product', 'Offer', 'Order', 'UnitOfMeasurementItem'
 )
 
 __all__ = (
@@ -25,6 +25,7 @@ __all__ = (
     'Client',
     'OrderItem',
     'Order',
+    'UnitOfMeasurementItem',
     'PROCESSED_ITEMS',
 )
 
@@ -33,6 +34,16 @@ class BaseItem(object):
 
     def __init__(self, xml_element=None):
         self.xml_element = xml_element
+
+
+class UnitOfMeasurementItem(BaseItem):
+
+    def __init__(self, *args, **kwargs):
+        super(UnitOfMeasurementItem, self).__init__(*args, **kwargs)
+
+        self.code = str()
+        self.title_full = str()
+        self.intern_title_short = str()
 
 
 class Group(BaseItem):

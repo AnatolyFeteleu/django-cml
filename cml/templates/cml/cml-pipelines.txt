@@ -11,6 +11,17 @@ import decimal
 from cml.items import Order, OrderItem
 
 
+class UnitOfMeasurementItem(object):
+    """
+    Item fields:
+    code
+    title_full
+    intern_title_short
+    """
+    def process_item(self, item):
+        pass
+
+
 class GroupPipeline(object):
     """
     Item fields:
