@@ -61,7 +61,8 @@ def upload_file(request):
         except OSError:
             return error(request, 'Can\'t create upload directory!')
     filename = os.path.basename(filename)
-    temp_file = SimpleUploadedFile(filename, request.read(), content_type='text/xml')
+    temp_file = SimpleUploadedFile(filename, request.read(),
+                                   content_type='text/xml; charset=windows-1251')
     with open(os.path.join(settings.CML_UPLOAD_ROOT, filename), 'wb') as f:
         for chunk in temp_file.chunks():
             f.write(chunk)
@@ -93,7 +94,8 @@ def import_file(request):
 def export_query(request):
     export_manager = ExportManager()
     export_manager.export_all()
-    return HttpResponse(export_manager.get_xml(), content_type='text/xml')
+    return HttpResponse(export_manager.get_xml(),
+                        content_type='text/xml; charset=windows-1251')
 
 
 def export_success(request):
