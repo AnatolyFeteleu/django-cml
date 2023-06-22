@@ -390,7 +390,7 @@ class ExportManager(object):
     def __init__(self):
         self.item_processor = ItemProcessor()
         self.root = ET.Element(COMMERCIAL_INFORMATION)
-        self.root.set(VERSIONS_OF_THE_SCHEME, '2.05')
+        self.root.set(VERSIONS_OF_THE_SCHEME, settings.CML_DOC_VERSION)
         self.root.set(DATA_FORMATIONS, six.text_type(datetime.now().date()))
 
     def get_xml(self):
