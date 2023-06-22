@@ -102,6 +102,7 @@ class Product(BaseItem):
 
         self.id = str()
         self.name = str()
+        self.item_number = str()
         self.sku_id = str()
         self.group_ids = list()
         self.properties = list()

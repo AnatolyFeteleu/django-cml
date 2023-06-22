@@ -154,6 +154,9 @@ class ImportManager(ManagerMixin):
                 self.find(ID, tree=product_element))
             product_item.name = self._get_cleaned_text(
                 self.find(TITLE, tree=product_element))
+            product_item.item_number = self._get_cleaned_text(
+                self.find(ITEM_NUMBER, tree=product_element))
+
             sku_element = self.find(BASIC_UNIT, tree=product_element)
 
             if sku_element is not None:
