@@ -34,7 +34,7 @@ class ExportManagerTestCase(TestCase):
         man = ExportManager()
         man.export_all()
         tree = ET.fromstring(man.get_xml())
-        orders_elements = tree.find(u'Документ')
+        orders_elements = tree.find('Документ')
         self.assertIsNotNone(orders_elements)
 
 

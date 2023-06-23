@@ -3,4 +3,5 @@ include README.rst
 recursive-include cml/management *
 recursive-include cml/templates *
 recursive-include cml/migrations *
+recursive-include cml/utils *
 recursive-include docs *

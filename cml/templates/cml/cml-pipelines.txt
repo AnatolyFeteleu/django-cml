@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -
 """
 This file was generated with the cmlpipelines management command.
 It contains the pipelines classes for that accept or send items for
@@ -10,7 +9,17 @@ To activate your pipelines add the following to your settings.py:
 
 import decimal
 from cml.items import Order, OrderItem
-import orders.models as prod
+
+
+class UnitOfMeasurementItem(object):
+    """
+    Item fields:
+    code
+    title_full
+    intern_title_short
+    """
+    def process_item(self, item):
+        pass
 
 
 class GroupPipeline(object):

@@ -1,9 +1,33 @@
-# -*- coding: utf-8 -
 from __future__ import absolute_import
-from decimal import Decimal
-from datetime import datetime
 
-PROCESSED_ITEMS = ('Group', 'PropertyVariant', 'Property', 'PropertyVariant', 'Sku', 'Tax', 'Product', 'Offer', 'Order')
+from datetime import datetime
+from decimal import Decimal
+
+from .utils.translations import *
+
+PROCESSED_ITEMS = (
+    'Group', 'PropertyVariant', 'Property', 'PropertyVariant', 'Sku', 'Tax',
+    'Product', 'Offer', 'Order', 'UnitOfMeasurementItem'
+)
+
+__all__ = (
+    'BaseItem',
+    'Group',
+    'Property',
+    'PropertyVariant',
+    'Sku',
+    'Tax',
+    'AdditionalField',
+    'Product',
+    'PriceType',
+    'Price',
+    'Offer',
+    'Client',
+    'OrderItem',
+    'Order',
+    'UnitOfMeasurementItem',
+    'PROCESSED_ITEMS',
+)
 
 
 class BaseItem(object):
@@ -12,22 +36,34 @@ class BaseItem(object):
         self.xml_element = xml_element
 
 
+class UnitOfMeasurementItem(BaseItem):
+
+    def __init__(self, *args, **kwargs):
+        super(UnitOfMeasurementItem, self).__init__(*args, **kwargs)
+
+        self.code = str()
+        self.title_full = str()
+        self.intern_title_short = str()
+
+
 class Group(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Group, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.groups = []
+
+        self.id = str()
+        self.name = str()
+        self.groups = list()
 
 
 class Property(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Property, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.value_type = u''
+
+        self.id = str()
+        self.name = str()
+        self.value_type = str()
         self.for_products = False
 
 
@@ -35,26 +71,29 @@ class PropertyVariant(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(PropertyVariant, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.value = u''
-        self.property_id = u''
+
+        self.id = str()
+        self.value = str()
+        self.property_id = str()
 
 
 class Sku(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Sku, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.name_full = u''
-        self.international_abbr = u''
+
+        self.id = str()
+        self.name = str()
+        self.name_full = str()
+        self.international_abbr = str()
 
 
 class Tax(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Tax, self).__init__(*args, **kwargs)
-        self.name = u''
+
+        self.name = str()
         self.value = Decimal()
 
 
@@ -62,32 +101,36 @@ class AdditionalField(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(AdditionalField, self).__init__(*args, **kwargs)
-        self.name = u''
-        self.value = u''
+
+        self.name = str()
+        self.value = str()
 
 
 class Product(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.sku_id = u''
-        self.group_ids = []
-        self.properties = []
-        self.tax_name = u''
-        self.image_path = u''
-        self.additional_fields = []
+
+        self.id = str()
+        self.name = str()
+        self.item_number = str()
+        self.sku_id = str()
+        self.group_ids = list()
+        self.properties = list()
+        self.tax_name = str()
+        self.image_path = str()
+        self.additional_fields = list()
 
 
 class PriceType(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(PriceType, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.currency = u''
-        self.tax_name = u''
+
+        self.id = str()
+        self.name = str()
+        self.currency = str()
+        self.tax_name = str()
         self.tax_in_sum = False
 
 
@@ -95,11 +138,12 @@ class Price(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Price, self).__init__(*args, **kwargs)
-        self.representation = u''
-        self.price_type_id = u''
+
+        self.representation = str()
+        self.price_type_id = str()
         self.price_for_sku = Decimal()
-        self.currency_name = u''
-        self.sku_name = u''
+        self.currency_name = str()
+        self.sku_name = str()
         self.sku_ratio = Decimal()
 
 
@@ -107,29 +151,34 @@ class Offer(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Offer, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.name = u''
-        self.sku_id = u''
-        self.prices = []
+
+        self.id = str()
+        self.name = str()
+        self.sku_id = str()
+        self.prices = list()
 
 
 class Client(BaseItem):
 
     def __init__(self):
-        self.id = u''
-        self.name = u''
-        self.role = u'Покупатель'
-        self.full_name = u''
-        self.first_name = u''
-        self.last_name = u''
-        self.address = u''
+        super().__init__()
+
+        self.id = str()
+        self.name = str()
+        self.role = BUYER
+        self.full_name = str()
+        self.first_name = str()
+        self.last_name = str()
+        self.address = str()
 
 
 class OrderItem(BaseItem):
 
     def __init__(self):
-        self.id = u''
-        self.name = u''
+        super().__init__()
+
+        self.id = str()
+        self.name = str()
         self.sku = Sku(None)
         self.price = Decimal()
         self.quant = Decimal()
@@ -140,16 +189,17 @@ class Order(BaseItem):
 
     def __init__(self, *args, **kwargs):
         super(Order, self).__init__(*args, **kwargs)
-        self.id = u''
-        self.number = u''
+
+        self.id = str()
+        self.number = str()
         self.date = datetime.now().date()
-        self.currency_name = u''
+        self.currency_name = str()
         self.currency_rate = Decimal()
-        self.operation = u'Заказ товара'
-        self.role = u'Продавец'
+        self.operation = PRODUCT_ORDER
+        self.role = SELLER
         self.sum = Decimal()
         self.client = Client()
         self.time = datetime.now().time()
-        self.comment = u''
-        self.items = []
-        self.additional_fields = []
+        self.comment = str()
+        self.items = list()
+        self.additional_fields = list()
