@@ -114,6 +114,7 @@ class OfferPipeline(object):
     name
     sku_id
     prices
+    quantity
     """
     def process_item(self, item):
         pass

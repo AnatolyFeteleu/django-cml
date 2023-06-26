@@ -156,6 +156,7 @@ class Offer(BaseItem):
         self.name = str()
         self.sku_id = str()
         self.prices = list()
+        self.quantity = int()
 
 
 class Client(BaseItem):

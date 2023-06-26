@@ -270,6 +270,7 @@ class ImportManager(ManagerMixin):
             offer_item = Offer(offer_element)
             offer_item.id = self._get_cleaned_text(self.find(ID, tree=offer_element))
             offer_item.name = self._get_cleaned_text(self.find(TITLE, tree=offer_element))
+            offer_item.quantity = self._get_cleaned_text(self.find(QUANTITY, tree=offer_element))
 
             sku_element = self.find(BASIC_UNIT, tree=offer_element)
             if sku_element is not None:
