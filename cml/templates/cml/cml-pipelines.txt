@@ -88,6 +88,7 @@ class ProductPipeline(object):
     properties
     tax_name
     image_path
+    image_filename
     additional_fields
     """
     def process_item(self, item):
