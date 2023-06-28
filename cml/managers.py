@@ -190,7 +190,8 @@ class ImportManager(ManagerMixin):
 
                 if image_filename:
                     product_item.image_path = os.path.join(
-                        settings.CML_UPLOAD_ROOT, image_filename)
+                        settings.MEDIA_ROOT, image_filename)
+                    product_item.image_filename = image_filename
 
             for group_id_element in self.find_all(
                     f'{GROUPS}/{ID}', tree=product_element):
@@ -397,7 +398,7 @@ class ExportManager(object):
     def get_xml(self):
         f = BytesIO()
         tree = ET.ElementTree(self.root)
-        tree.write(f, encoding='windows-1251', xml_declaration=True)
+        tree.write(f, encoding=settings.CML_DEFAULT_CHARSET, xml_declaration=True)
         return f.getvalue()
 
     def export_all(self):

@@ -119,6 +119,7 @@ class Product(BaseItem):
         self.properties = list()
         self.tax_name = str()
         self.image_path = str()
+        self.image_filename = str()
         self.additional_fields = list()
 
 
