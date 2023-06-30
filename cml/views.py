@@ -63,12 +63,11 @@ def upload_file(request):
         except OSError:
             return error(request, 'Can\'t create upload directory!')
 
-    filename = os.path.basename(filename)
-    content_type = request.content_type
-    download_path = settings.CML_CATALOG_FILE_DOWNLOAD_PATH[content_type]
+    filename, extension = os.path.splitext(os.path.basename(filename))
+    download_path = settings.CML_CATALOG_FILE_DOWNLOAD_PATH[extension.lower()]
     temp_file = SimpleUploadedFile(
         filename, request.read(),
-        content_type=settings.CML_TEMP_FILE_CONTENT_TYPE[content_type]
+        content_type=settings.CML_TEMP_FILE_CONTENT_TYPE[extension]
     )
     with open(os.path.join(download_path, filename), 'wb') as f:
         for chunk in temp_file.chunks():
