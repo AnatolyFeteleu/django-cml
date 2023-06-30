@@ -33,18 +33,16 @@ class CMLAppConf(AppConf):
     CATALOG_FILE_DOWNLOAD_PATH = defaultdict(
         lambda: getattr(settings, 'CML_UPLOAD_ROOT'),
         **{
-            'application/xml': UPLOAD_ROOT,
-            'text/xml': UPLOAD_ROOT,
-            'image/png': settings.MEDIA_ROOT,
-            'image/jpeg': settings.MEDIA_ROOT,
-            'image/jpg': settings.MEDIA_ROOT,
+            '.xml': UPLOAD_ROOT,
+            '.png': settings.MEDIA_ROOT,
+            '.jpeg': settings.MEDIA_ROOT,
+            '.jpg': settings.MEDIA_ROOT,
         })
     TEMP_FILE_CONTENT_TYPE = defaultdict(
         lambda: f'application/xml;charset={getattr(settings, "CML_DEFAULT_CHARSET")}',
         **{
-            'application/xml': f'application/xml;charset={DEFAULT_CHARSET}',
-            'text/xml': f'text/xml;charset={DEFAULT_CHARSET}',
-            'image/png': 'image/png',
-            'image/jpeg': 'image/jpeg',
-            'image/jpg': 'image/jpg',
+            '.xml': f'application/xml;charset={DEFAULT_CHARSET}',
+            '.png': 'image/png',
+            '.jpeg': 'image/jpeg',
+            '.jpg': 'image/jpg',
         })
