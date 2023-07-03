@@ -66,8 +66,8 @@ def upload_file(request):
     filename, extension = os.path.splitext(os.path.basename(filename))
     download_path = settings.CML_CATALOG_FILE_DOWNLOAD_PATH[extension.lower()]
     temp_file = SimpleUploadedFile(
-        filename, request.read(),
-        content_type=settings.CML_TEMP_FILE_CONTENT_TYPE[extension]
+        filename+extension, request.read(),
+        content_type=settings.CML_TEMP_FILE_CONTENT_TYPE[extension.lower()]
     )
     with open(os.path.join(download_path, filename), 'wb') as f:
         for chunk in temp_file.chunks():
